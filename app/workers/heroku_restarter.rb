@@ -1,13 +1,13 @@
 ENV['HEROKU_USERNAME'] ||= "someguy@somewhere.com"
 ENV['HEROKU_PASSWORD'] ||= "password"
-ENV['TIME_TO_RUN_IN_MINUTES'] ||= "5"
+ENV['REFRESH_TIME'] ||= "5"
 ENV['TARGET_APP_NAME'] ||= "my-heroku-app-name"
 
 class HerokuRestarter
   include Sidekiq::Worker
   include Sidetiq::Schedulable
 
-  recurrence { minutely(ENV['TIME_TO_RUN_IN_MINUTES'].to_i) }
+  recurrence { minutely(ENV['REFRESH_TIME'].to_i) }
 
   def perform(*dummy_args)
     heroku = Heroku::Client.new(ENV['HEROKU_USERNAME'], ENV['HEROKU_PASSWORD'])
